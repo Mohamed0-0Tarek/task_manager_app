@@ -15,12 +15,27 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  List<TaskModel> searchedTasks = List.from(tasks);
+  TextEditingController searchFieldController = TextEditingController();
 
-  late List<TaskModel> filterdTasks;
-
-    void removeTask(int index) => setState(() {
-      tasks.removeAt(index);
+  void removeTask(TaskModel task) => setState(() {
+    tasks.remove(task);
+    searchTasks(searchFieldController.text);
+  });
+  void searchTasks(String value) {
+    setState(() {
+      if (value.trim().isEmpty) {
+        searchedTasks = List.from(tasks);
+      } else {
+        searchedTasks = tasks
+            .where(
+              (task) => task.title.toLowerCase().contains(value.toLowerCase()),
+            )
+            .toList();
+      }
     });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -44,7 +59,9 @@ class _HomeScreenState extends State<HomeScreen> {
           children: [
             AnalyticsBar(),
             const SizedBox(height: 10),
-            const TextField(
+
+            TextField(
+              controller: searchFieldController,
               decoration: InputDecoration(
                 filled: true,
                 fillColor: Colors.white,
@@ -56,16 +73,28 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                 ),
               ),
+              onChanged: (value) {
+                searchTasks(value);
+              },
             ),
             const SizedBox(height: 10),
             FilterBar(),
             SizedBox(height: 10),
+            // Expanded(
+            //   child: ListView.builder(
+            //     itemCount: tasks.length,
+            //     itemBuilder: (context, indx) =>
+            //         TaskItem(index: indx, deleteFn: removeTask),
+            //   ),
+            // ),
             Expanded(
-              child: ListView.builder(
-                itemCount: tasks.length,
-                itemBuilder: (context, indx) =>
-                    TaskItem(index: indx, deleteFn: removeTask),
-              ),
+              child:
+                  ListView.builder(
+                    itemCount: searchedTasks.length,
+                    itemBuilder: (context, indx) =>
+                        TaskItem(task: searchedTasks[indx], deleteFn: removeTask),
+                  ),
+                  
             ),
           ],
         ),

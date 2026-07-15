@@ -4,6 +4,7 @@ import 'package:task_manager_app/screens/edit_screen.dart';
 import 'package:task_manager_app/screens/home_screen.dart';
 import 'package:task_manager_app/screens/splash_screen.dart';
 import 'package:task_manager_app/screens/task_screen.dart';
+import 'package:task_manager_app/models/task_model.dart';
 
 class AppRoutes {
   static const String home = '/';
@@ -18,10 +19,10 @@ final router = GoRouter(
   routes: [
     GoRoute(path: AppRoutes.home, builder: (context, state) => HomeScreen()),
     GoRoute(
-      path: '${AppRoutes.task}/:index',
+      path: '${AppRoutes.task}/:id',
       builder: (context, state) {
-        int indx = int.parse(state.pathParameters["index"]!.substring(1));
-        return TaskScreen(index: indx);
+        int id = int.parse(state.pathParameters["id"]!);
+        return TaskScreen(task: tasks.firstWhere((task) => task.id == id));
       },
     ),
     GoRoute(
@@ -29,10 +30,10 @@ final router = GoRouter(
       builder: (context, state) => SplashScreen(),
     ),
     GoRoute(
-      path: '${AppRoutes.edit}/:index',
+      path: '${AppRoutes.edit}/:id',
       builder: (context, state) {
-        int indx = int.parse(state.pathParameters["index"]!.substring(1));
-        return EditScreen(index: indx);
+        int id = int.parse(state.pathParameters["id"]!);
+        return EditScreen(task: tasks.firstWhere((task) => task.id == id));
       },
     ),
     GoRoute(

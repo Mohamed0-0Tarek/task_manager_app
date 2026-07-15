@@ -4,15 +4,15 @@ import 'package:task_manager_app/utils/enums.dart';
 class TaskModel {
   final int? id;
   final String title;
-  final String discription;
+  final String description;
   final DateTime dateTime;
   final bool isCompleted;
   final PriorityValues priority;
 
   TaskModel({
-    this.id,
+    required this.id,
     required this.title,
-    required this.discription,
+    required this.description,
     required this.dateTime,
     this.isCompleted = false,
     required this.priority,
@@ -29,7 +29,7 @@ class TaskModel {
     return TaskModel(
       id: id ?? this.id,
       title: title ?? this.title,
-      discription: discription ?? this.discription,
+      description: discription ?? this.description,
       dateTime: dateTime ?? this.dateTime,
       isCompleted: isCompleted ?? this.isCompleted,
       priority: priority ?? this.priority,
@@ -37,13 +37,4 @@ class TaskModel {
   }
 }
 
-List<TaskModel> tasks = [
-  TaskModel(
-    id: 1,
-    title: "Pray",
-    discription: "pray the five important things in the life.",
-    dateTime: DateTime(2026, 6, 29, 9, 30),
-    priority: PriorityValues.high,
-    isCompleted: true,
-  ),
-];
+List<TaskModel> tasks = [];

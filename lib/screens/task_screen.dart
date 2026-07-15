@@ -5,16 +5,15 @@ import 'package:task_manager_app/utils/routes.dart';
 import 'package:task_manager_app/utils/utils.dart';
 
 class TaskScreen extends StatefulWidget {
-  final int index;
-  const TaskScreen({super.key, required this.index});
+  final TaskModel task;
+  const TaskScreen({super.key, required this.task});
 
   @override
   State<TaskScreen> createState() => _TaskScreenState();
 }
 
 class _TaskScreenState extends State<TaskScreen> {
-  
-  late TaskModel passedTask = tasks[widget.index];
+  late TaskModel passedTask = widget.task;
 
   @override
   Widget build(BuildContext context) {
@@ -44,14 +43,14 @@ class _TaskScreenState extends State<TaskScreen> {
                   passedTask.dateTime.toString(),
                   style: TextStyle(fontWeight: FontWeight.w300),
                 ),
-                Text("${priorityNameMapper[passedTask.priority]}", style: TextStyle(fontWeight: FontWeight.w300)),
+                Text(
+                  "${priorityNameMapper[passedTask.priority]}",
+                  style: TextStyle(fontWeight: FontWeight.w300),
+                ),
               ],
             ),
             SizedBox(height: 10),
-            Text(
-              passedTask.discription,
-              style: TextStyle(fontSize: 18),
-            ),
+            Text(passedTask.description, style: TextStyle(fontSize: 18)),
           ],
         ),
       ),
