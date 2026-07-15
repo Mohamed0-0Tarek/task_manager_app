@@ -54,6 +54,11 @@ class _HomeScreenState extends State<HomeScreen> {
     });
   }
 
+  void toggleTasks (){
+    setState(() {
+      
+    });
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -123,7 +128,7 @@ class _HomeScreenState extends State<HomeScreen> {
               child: ListView.builder(
                 itemCount: searchedTasks.length,
                 itemBuilder: (context, indx) =>
-                    TaskItem(task: searchedTasks[indx], deleteFn: removeTask),
+                    TaskItem(task: searchedTasks[indx], deleteFn: removeTask,toggleTask: toggleTasks,),
               ),
             ),
           ],

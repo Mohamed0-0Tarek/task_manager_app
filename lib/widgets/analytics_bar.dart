@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:task_manager_app/models/task_model.dart';
 
 class AnalyticsBar extends StatelessWidget {
   const AnalyticsBar({super.key});
@@ -22,7 +23,7 @@ class AnalyticsBar extends StatelessWidget {
                     alignment: Alignment(0, 0),
 
                     child: Text(
-                      "Done : 5",
+                      "Done : ${tasks.where((task) => task.isCompleted).length}",
                       style: TextStyle(color: Colors.green),
                     ),
                   ),
@@ -32,7 +33,7 @@ class AnalyticsBar extends StatelessWidget {
                   child: Container(
                     alignment: Alignment(0, 0),
                     child: Text(
-                      "Remains : 5",
+                      "Remains : ${tasks.where((task) => !task.isCompleted).length}",
                       style: TextStyle(color: Colors.red),
                     ),
                   ),
@@ -40,7 +41,7 @@ class AnalyticsBar extends StatelessWidget {
               ],
             ),
             Text(
-              "10",
+              "${tasks.length}",
               style: TextStyle(
                 fontSize: 20,
                 fontWeight: FontWeight(20),

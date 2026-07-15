@@ -7,8 +7,14 @@ import 'package:task_manager_app/utils/utils.dart';
 class TaskItem extends StatefulWidget {
   final TaskModel task;
   final Function deleteFn;
+  final Function toggleTask;
 
-  const TaskItem({super.key, required this.task, required this.deleteFn});
+  const TaskItem({
+    super.key,
+    required this.task,
+    required this.deleteFn,
+    required this.toggleTask,
+  });
 
   @override
   State<TaskItem> createState() => _TaskItemState();
@@ -50,6 +56,7 @@ class _TaskItemState extends State<TaskItem> {
                         )] =
                         passedTask;
                   });
+                  widget.toggleTask();
                 },
                 icon: (passedTask.isCompleted)
                     ? Icon(Icons.circle_rounded)
