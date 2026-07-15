@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:task_manager_app/models/task_model.dart';
+import 'package:task_manager_app/utils/enums.dart';
 import 'package:task_manager_app/utils/routes.dart';
 import 'package:task_manager_app/widgets/analytics_bar.dart';
 import 'package:task_manager_app/widgets/filter_bar.dart';
 import 'package:task_manager_app/widgets/task_item.dart';
-import 'package:custom_radio_grouped_button/custom_radio_grouped_button.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -15,8 +15,10 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  List<TaskModel> searchedTasks = List.from(tasks);
+  List<TaskModel> filteredTasks = List.from(tasks);
+  late List<TaskModel> searchedTasks = List.from(filteredTasks);
   TextEditingController searchFieldController = TextEditingController();
+  PriorityValues? selectedPriority;
 
   void removeTask(TaskModel task) => setState(() {
     tasks.remove(task);
@@ -25,14 +27,28 @@ class _HomeScreenState extends State<HomeScreen> {
   void searchTasks(String value) {
     setState(() {
       if (value.trim().isEmpty) {
-        searchedTasks = List.from(tasks);
+        searchedTasks = List.from(filteredTasks);
       } else {
-        searchedTasks = tasks
+        searchedTasks = filteredTasks
             .where(
               (task) => task.title.toLowerCase().contains(value.toLowerCase()),
             )
             .toList();
       }
+    });
+  }
+
+  void filterTasks(PriorityValues? priority) {
+    setState(() {
+      selectedPriority = priority;
+      if (selectedPriority == null) {
+        filteredTasks = List.from(tasks);
+      } else {
+        filteredTasks = tasks
+            .where((task) => task.priority == selectedPriority)
+            .toList();
+      }
+      searchTasks(searchFieldController.text);
     });
   }
 
@@ -78,7 +94,10 @@ class _HomeScreenState extends State<HomeScreen> {
               },
             ),
             const SizedBox(height: 10),
-            FilterBar(),
+            FilterBar(
+              selectedPriority: selectedPriority,
+              onChange: filterTasks,
+            ),
             SizedBox(height: 10),
             // Expanded(
             //   child: ListView.builder(
@@ -88,13 +107,11 @@ class _HomeScreenState extends State<HomeScreen> {
             //   ),
             // ),
             Expanded(
-              child:
-                  ListView.builder(
-                    itemCount: searchedTasks.length,
-                    itemBuilder: (context, indx) =>
-                        TaskItem(task: searchedTasks[indx], deleteFn: removeTask),
-                  ),
-                  
+              child: ListView.builder(
+                itemCount: searchedTasks.length,
+                itemBuilder: (context, indx) =>
+                    TaskItem(task: searchedTasks[indx], deleteFn: removeTask),
+              ),
             ),
           ],
         ),

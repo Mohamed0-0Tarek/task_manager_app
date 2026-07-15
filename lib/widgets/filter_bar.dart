@@ -1,7 +1,45 @@
 import 'package:flutter/material.dart';
+import 'package:task_manager_app/utils/enums.dart';
 
-class FilterBar extends StatelessWidget {
-  const FilterBar({super.key});
+class FilterBar extends StatefulWidget {
+  final PriorityValues? selectedPriority;
+  final Function (PriorityValues?)onChange;
+  const FilterBar({
+    super.key,
+    required this.selectedPriority,
+    required this.onChange,
+  });
+
+  @override
+  State<FilterBar> createState() => _FilterBarState();
+}
+
+class _FilterBarState extends State<FilterBar> {
+  Widget filterRadioButton(PriorityValues? priority, String text) {
+    return InkWell(
+      onTap: () {
+        widget.onChange(priority);
+      },
+      child: Container(
+        decoration: BoxDecoration(
+          color: (widget.selectedPriority == priority)
+              ? Colors.amberAccent
+              : Colors.transparent,
+          border: Border.all(),
+          borderRadius: BorderRadius.circular(10),
+        ),
+        child: Padding(
+          padding: const EdgeInsetsGeometry.directional(
+            start: 20,
+            end: 20,
+            top: 8,
+            bottom: 8,
+          ),
+          child: Text(text),
+        ),
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -15,67 +53,10 @@ class FilterBar extends StatelessWidget {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Container(
-              decoration: BoxDecoration(
-                color: Colors.amberAccent,
-                border: Border.all(),
-                borderRadius: BorderRadius.circular(10),
-              ),
-              child: Padding(
-                padding: const EdgeInsetsGeometry.directional(
-                  start: 20,
-                  end: 20,
-                  top: 8,
-                  bottom: 8,
-                ),
-                child: Text("all"),
-              ),
-            ),
-            Container(
-              decoration: BoxDecoration(
-                border: Border.all(),
-                borderRadius: BorderRadius.circular(10),
-              ),
-              child: Padding(
-                padding: const EdgeInsetsGeometry.directional(
-                  start: 20,
-                  end: 20,
-                  top: 8,
-                  bottom: 8,
-                ),
-                child: Text("high"),
-              ),
-            ),
-            Container(
-              decoration: BoxDecoration(
-                border: Border.all(),
-                borderRadius: BorderRadius.circular(10),
-              ),
-              child: Padding(
-                padding: const EdgeInsetsGeometry.directional(
-                  start: 20,
-                  end: 20,
-                  top: 8,
-                  bottom: 8,
-                ),
-                child: Text("medium"),
-              ),
-            ),
-            Container(
-              decoration: BoxDecoration(
-                border: Border.all(),
-                borderRadius: BorderRadius.circular(10),
-              ),
-              child: Padding(
-                padding: const EdgeInsetsGeometry.directional(
-                  start: 20,
-                  end: 20,
-                  top: 8,
-                  bottom: 8,
-                ),
-                child: Text("low"),
-              ),
-            ),
+            filterRadioButton(null, "All"),
+            filterRadioButton(PriorityValues.high, "High"),
+            filterRadioButton(PriorityValues.medium, "Medium"),
+            filterRadioButton(PriorityValues.low, "Low"),
           ],
         ),
       ),
