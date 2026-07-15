@@ -1,3 +1,5 @@
+import 'dart:js_interop';
+
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:task_manager_app/models/task_model.dart';
@@ -79,8 +81,19 @@ class _HomeScreenState extends State<HomeScreen> {
             TextField(
               controller: searchFieldController,
               decoration: InputDecoration(
+                suffixIcon: IconButton(
+                  onPressed: () {
+                    setState(() {
+                      searchFieldController.clear();
+                      searchTasks(searchFieldController.text);
+                    });
+                  },
+                  icon: Icon(Icons.backspace_outlined),
+                ),
+
                 filled: true,
                 fillColor: Colors.white,
+                hintText: "Search",
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.all(Radius.circular(20)),
                   borderSide: BorderSide(
