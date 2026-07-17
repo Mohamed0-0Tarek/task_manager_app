@@ -1,5 +1,3 @@
-import 'dart:js_interop';
-
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:task_manager_app/models/task_model.dart';
